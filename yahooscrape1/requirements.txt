@@ -1,0 +1,8 @@
+beautifulsoup4==4.11.1
+df2gspread==1.0.4
+gspread==5.5.0
+gspread_dataframe==3.3.0
+oauth2client==4.1.3
+pandas==1.4.4
+requests==2.28.1
+selenium==4.7.2
