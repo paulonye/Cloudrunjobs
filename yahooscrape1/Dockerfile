@@ -32,7 +32,7 @@ ENV DISPLAY=:99
 #Copies the service account key into the docker container
 COPY key.json /home/app/key.json
 
-#Sets the service account key.json as an environmental variable
+#Sets the service account key.json as an environmental variable called key_file
 ENV key_file key.json
 
 #Copies the needed libraries 
@@ -42,13 +42,12 @@ COPY requirements.txt /home/app/requirements.txt
 RUN pip install -r /home/app/requirements.txt
 
 #Copies the ff scripts into the docker container
-COPY append.py /home/app/append.py
+COPY connect.py /home/app/connect.py
 COPY main.py /home/app/main.py
-COPY push.py /home/app/push.py
-COPY sheet_connect.py /home/app/sheet_connect.py
-COPY send_mail.py /home/app/send_mail.py
+COPY scrape.py /home/app/scrape.py
 
 #Sets the working directory
 WORKDIR /home/app
 
-ENTRYPOINT ["python", "/home/app/append.py"]
+ENTRYPOINT ["python", "/home/app/main.py"]
+CMD ["--googlesheet", "test_sheet", "--sheetname", "data4"]
