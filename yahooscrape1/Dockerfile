@@ -50,4 +50,7 @@ COPY scrape.py /home/app/scrape.py
 WORKDIR /home/app
 
 ENTRYPOINT ["python", "/home/app/main.py"]
+#This is the default argument for the google sheet and the sheet that
+#you are pushing the data to
+#change to reflect yours
 CMD ["--googlesheet", "test_sheet", "--sheetname", "data4"]
