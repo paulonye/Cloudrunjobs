@@ -9,7 +9,7 @@
 >
 >[Link to the Yahoo Finance Website](https://finance.yahoo.com/crypto/?.tsrc=fin-srch&offset=0&count=15)
 >
->[Link to the Medium Article](https://medium.com/@nwosupaul141/building-an-etl-pipeline-using-google-service-accounts-85e2a6cfd94d) 
+>[Link to the Medium Article](https://medium.com/@nwosupaul141/deployment-of-containerized-data-applications-on-google-cloud-run-pt1-80750dce02f8) 
 
 ## Project Structure
 
