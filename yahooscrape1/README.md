@@ -22,7 +22,7 @@
 - Configuration settings of Cloud Run
 - Setting up a scheduler for the Cloud Run Job
 
-![Cover_Image](https://storage.googleapis.com/images-xlr1001/cover2.png)
+![Cover_Image](https://nwosupaulonye.s3.amazonaws.com/cover2.png)
  
 ## Set up your environment
 Clone the Github Repo 
