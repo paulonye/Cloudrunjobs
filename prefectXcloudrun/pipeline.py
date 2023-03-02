@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from time import sleep
 import requests
 import datetime
+from pathlib import Path
 from datetime import timedelta
 
 from selenium import webdriver
@@ -12,7 +13,8 @@ from selenium.common.exceptions import TimeoutException
 
 from prefect import flow, task
 from prefect.tasks import task_input_hash
-from prefect_sqlalchemy import SqlAlchemyConnector
+from prefect_gcp.cloud_storage import GcsBucket
+from prefect_gcp import GcpCredentials
 
 chrome_options = Options()
 chrome_options.add_argument("--headless")
@@ -51,16 +53,18 @@ def capture_data(url: str) -> pd.DataFrame:
         
     df = pd.DataFrame({'name':name, 'price':price, 'market_cap':market_cap})
 
+    print(len(df))
+
     return df
 
 #Transforming the Data
 @task(log_prints=True, tags=['Transform'])  
-def trans_df(df: pd.DataFrame) -> pd.DataFrame:
+def trans_df(df: pd.DataFrame) -> Path:
 
     current_time = datetime.datetime.now()
-    current_timestamp = pd.Timestamp(current_time.strftime('%Y-%m-%d %H:%M'))
+    current_date = pd.Timestamp(current_time.strftime('%Y-%m-%d')).date()
 
-    df['date'] = current_timestamp
+    df['date'] = current_date
 
     #some basic data cleaning steps to ensure the data comes out in the right format
     df['date'] = df['date'].astype('str')
@@ -80,41 +84,35 @@ def trans_df(df: pd.DataFrame) -> pd.DataFrame:
     df['market_cap'] = pd.to_numeric(df['market_cap'])
           
     df = df[['date','name','price','market_cap']]
+
+    path = Path(f"data/yahoo-{current_date}.csv")
+
+    df.to_csv(path)
     
-    return df
+    return path
 
-#Loading the Data 
-@task(log_prints=True, tags=['Load'])
-def batch(df: pd.DataFrame, tablename: str) -> None:
-    
-    connection_block = SqlAlchemyConnector.load("postgres-connector")
-    with connection_block.get_connection(begin=False) as engine:
+#Loading the Data to Google Cloud Storage
+@task(log_prints=True, tags=["load to Cloud Storage"])
+def write_gcs(path: Path) -> None:
+    """Upload local parquet file to GCS"""
+    gcs_block = GcsBucket.load("zoom-gcs")
+    gcs_block.upload_from_path(from_path=path, to_path=path)
+    return
 
-        df.to_sql(name=tablename, con=engine, if_exists='append')
 
-        print('Batch Successful')
-
-        engine.connect().close()
-
-@flow(name='Flow-Postgres-ETL')
-def main(url: str, tablename: str):
-
-    url = url
-
-    tablename = tablename
+@flow(name='Flow-CloudStorage-EL')
+def main(url: str):
 
     data = capture_data(url)
 
     df = trans_df(data)
 
-    batch(df, tablename)
+    write_gcs(df)
 
 if __name__ == '__main__':
 
-    url = 'https://finance.yahoo.com/crypto/?.tsrc=fin-srch&offset=0&count=15'
+    url = 'https://finance.yahoo.com/crypto/?.tsrc=fin-srch&offset=0&count=100'
 
-    tablename = 'batchpg1'
-
-    main(url, tablename)
+    main(url)
     
     
