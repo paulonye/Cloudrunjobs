@@ -3,7 +3,7 @@
 >
 >The project focuses on orchestrating the pipeline for the scraper application that extracts data from Yahoo Finance and Loads it into Google Cloud Storage.
 >
->The Project is the 7th series in my "Building your first Google Cloud Analytics Project"
+>The Project is my final submission for the `Data Engineering Zoomcamp`
 >
 >[Link to the Yahoo Finance Website](https://finance.yahoo.com/crypto/?.tsrc=fin-srch&offset=0&count=100)
 >
@@ -21,6 +21,13 @@
 - Building and Pushing the Docker Image to Artifact Registry
 - Deploying the Flow
 - Running the Deployment
+
+## Final Dashboard
+![Dashboard_Image](https://nwosupaulonye2.s3.amazonaws.com/dashboard.png)
+
+>[Link to Dashboard](https://lookerstudio.google.com/reporting/9ce9b40b-7ae9-436c-929d-e2eb44efcc29/page/enCCD/edit)
+
+<br>
 
 ![Cover_Image](https://nwosupaulonye.s3.amazonaws.com/cover6.png)
  
