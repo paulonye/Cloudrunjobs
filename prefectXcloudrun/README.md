@@ -22,6 +22,13 @@
 - Deploying the Flow
 - Running the Deployment
 
+## Final Dashboard
+![Dashboard_Image](https://nwosupaulonye2/dashboard.png)
+
+>[Link to Dashboard](https://lookerstudio.google.com/reporting/9ce9b40b-7ae9-436c-929d-e2eb44efcc29/page/enCCD/edit)
+
+<br>
+
 ![Cover_Image](https://nwosupaulonye.s3.amazonaws.com/cover6.png)
  
 ## Set up your environment
